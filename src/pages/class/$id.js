@@ -1,6 +1,6 @@
 import { Component } from "react";
 
-export default class Layout extends Component {
+export default class Id extends Component {
   constructor(props) {
     super(props);
   }
