@@ -17,7 +17,8 @@ export default class Search extends Component {
   handleSubmit = () => {
     console.log("submit");
     this.props.dispatch({
-      type: "search/getLists", // models/search.js中定义的方法名
+      // type: "search/getLists", // models/search.js中定义的方法名
+      type: "search/getListsAsync", // models/search.js中定义的方法名
       payload: this.state.value
     })
   }
