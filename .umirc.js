@@ -28,7 +28,7 @@ export default {
       {
         antd: true,
         dva: true,
-        dynamicImport: false,
+        dynamicImport: true,
         title: 'project_react_egg',
         dll: false,
         routes: {
