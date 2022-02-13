@@ -11,11 +11,15 @@ export default class Lists extends Component {
   }
 
   render() {
+    console.log("props->", this.props);
+    const { text, lists } = this.props.search;
     return (
       <div>
-        <h1>text: </h1>
+        <h1>text: { text } </h1>
         <List>
-          <List.Item></List.Item>
+          { lists.map((item, index) => (
+            <List.Item key={index}>{item}</List.Item>
+          ))}
         </List>
       </div>
     )
