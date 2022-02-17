@@ -78,6 +78,25 @@ export default function(props) {
     demo
   */
 
+  // 2、把async函数写在useEffect同级
+  async function demo02() {
+    console.log("demo 02");
+  }
+  useEffect(() => {
+
+    console.log('useEffect');
+    
+    demo02();
+    console.log("02");
+
+  }, [count]);
+  // ↑ 控制台依次输出
+  /* 
+    useEffect
+    demo 01
+    demo
+  */
+  // useEffect说明 useEffect可以存在多个
 
 
 
