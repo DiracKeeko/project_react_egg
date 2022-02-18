@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 // ↑ 在function组件中使用useState方法设置变量和更改变量
 
 export default function(props) {
@@ -34,6 +34,7 @@ export default function(props) {
   */
 
   // ↓ useEffect中可以执行异步函数
+  /* 
   useEffect(() => {
     console.log('useEffect');
     let res;
@@ -45,7 +46,8 @@ export default function(props) {
       });
     console.log('res outside ->', res);
 
-  }, [count]);
+  }, [count]); 
+  */
   // ↑ 控制台依次输出
   /* 
     useEffect
@@ -66,8 +68,10 @@ export default function(props) {
     console.log('useEffect');
     async function demo() {
       console.log("demo 01");
+      // const res = await fetch('/api/getLists');
+      // console.log("res->", res);
     }
-    demo();
+    demo(); // 虽然能够执行，但fetch依然是异步的。
     console.log("01");
 
   }, [count]);
@@ -98,7 +102,13 @@ export default function(props) {
   */
   // useEffect说明 useEffect可以存在多个
 
+  useLayoutEffect(() => {
+    console.log("useLayoutEffect");
+  })
 
+  // useLayoutEffect先于所有的useEffect打印
+  // 1、一般在项目中在useEffect中做异步操作
+  // 2、在useLayoutEffect中操作dom对象或改变浏览器的显示效果
 
   const handleCount = () => {
     setCount(count + 1);
