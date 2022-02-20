@@ -12,7 +12,11 @@ export default {
     // ↓ mock api中支持异步
     setTimeout(() => {
       res.json({
-        lists: "res" + req.query.value
+        // lists: "res" + req.query.value
+        status: 200,
+        data: "no data"
+        // status: 500,
+        // errMsg: "err msg"
       })
     }, 800)
   }
