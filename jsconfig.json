@@ -1,0 +1,9 @@
+// vscode配置
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@/hooks": ["hooks/index"]
+    }
+  }
+}
