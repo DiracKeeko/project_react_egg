@@ -14,8 +14,8 @@ export default function(props){
     method: "GET",
     watch: [state] // ← 监听state的变化，如果state发生变化，则执行useHttpHook
   });
-  console.log("listResult->", listResult);
-  console.log("loading->", loading);
+  // console.log("listResult->", listResult);
+  // console.log("loading->", loading);
 
   const handleClick = () => {
     setState("customize changed");
