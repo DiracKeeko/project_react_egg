@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "start": "umi dev",
+    "dev": "umi dev",
     "build": "umi build",
     "test": "umi test",
     "lint": "eslint --ext .js src mock tests",
@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "antd": "^3.19.5",
+    "prop-types": "^15.8.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-icons": "^4.3.1",
     "think-react-store": "^1.6.71"
   },
   "devDependencies": {
