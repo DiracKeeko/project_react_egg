@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Picker, List, Calendar } from 'antd-mobile';
+import { Picker, List, Calendar, Button } from 'antd-mobile';
 import dayjs from 'dayjs';
 
 export default function (props) {
@@ -53,6 +53,7 @@ export default function (props) {
         <p className="search-time_right">{times}</p>
       </div>
       {/* 点击按钮 */}
+      <Button type="warning" size="large">搜索民宿</Button>
 
       <Calendar
         visible={dateShow}
