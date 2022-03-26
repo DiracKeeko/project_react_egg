@@ -26,7 +26,7 @@ export default function (props) {
     // console.log(startTime, endTime); // 返回值是两个时间对象
     const startTimeStr = dayjs(startTime).format('YYYY-MM-DD');
     const endTimeStr = dayjs(endTime).format('YYYY-MM-DD');
-    setTimes(startTimeStr + "~" + endTimeStr);
+    setTimes(startTimeStr + '~' + endTimeStr);
     setDateShow(false);
   };
 
@@ -36,16 +36,18 @@ export default function (props) {
     <div className="search">
       {/* 可选城市 */}
       <div className="search-addr">
-        <Picker
-          title="城市"
-          data={citys}
-          value={selectedCity}
-          cascade={false}
-          cols={1}
-          onChange={handleCityChange}
-        >
-          <List.Item>可选城市</List.Item>
-        </Picker>
+        {!props.citysLoading && (
+          <Picker
+            title="城市"
+            data={props.citys}
+            value={selectedCity}
+            cascade={false}
+            cols={1}
+            onChange={handleCityChange}
+          >
+            <List.Item>可选城市</List.Item>
+          </Picker>
+        )}
       </div>
       {/* 可选时间 */}
       <div className="search-time" onClick={handleDate}>
@@ -53,7 +55,9 @@ export default function (props) {
         <p className="search-time_right">{times}</p>
       </div>
       {/* 点击按钮 */}
-      <Button type="warning" size="large">搜索民宿</Button>
+      <Button type="warning" size="large">
+        搜索民宿
+      </Button>
 
       <Calendar
         visible={dateShow}
