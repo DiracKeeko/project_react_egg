@@ -3,15 +3,17 @@ import { useEffect } from "react";
 let sectionObserver;
 export default function useObserverHook(ele, callback, watch = []) {
   useEffect(() => {
-    sectionObserver = new IntersectionObserver(entries => {
-      callback && callback(entries);
-    });
-    const element = document.querySelector("#loading");
-    sectionObserver.observe(element);
+    const element = document.querySelector(ele);
+    if (element) {
+      sectionObserver = new IntersectionObserver(entries => {
+        callback && callback(entries);
+      });
+      sectionObserver.observe(element);
+    }
 
     // ↓ 在离开页面的时候触发
     return () => {
-      if (sectionObserver) {
+      if (sectionObserver && element) {
         sectionObserver.unobserve(element);
         sectionObserver.disconnect();
       }
