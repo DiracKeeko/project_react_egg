@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { SearchBar, ActivityIndicator } from 'antd-mobile';
 import { useHttpHook, useObserverHook, useImgHook } from '@/hooks';
+import { useLocation } from "umi";
 
 import './index.less';
 
 export default function (props) {
+  const { query } = useLocation(); // location中的query参数 { key: value }形式
   const [houseName, setHouseName] = useState('');
   const [page, setPage] = useState({
     pageSize: 8, // 单页展示元素数量
@@ -12,19 +14,25 @@ export default function (props) {
   });
   const [houseLists, setHouseLists] = useState([]);
   const [showLoading, setShowLoading] = useState(true);
+  const [houseSubmitName, setHouseSubmitName] = useState("");
+  
   const [houses, loading] = useHttpHook({
     url: '/house/search',
     body: {
       ...page,
+      houseName,
+      code: query?.code,
+      startTime: `${query?.startTime} 00:00:00`,
+      endTime: `${query?.endTime} 23:59:59`
     },
-    watch: [page.pageNum],
+    watch: [page.pageNum, houseSubmitName],
   });
 
   /**
-   * 1、监听loading是否展示出来
+   * 1、监听dom节点loading是否展示出来
    * 2、修改分页数据
    * 3、监听分页数据的修改，发送请求，获取下一页的数据
-   * 4、监听loading的变化，拼装数据
+   * 4、监听loading状态的变化，拼装数据
    */
   useObserverHook(
     '#loading',
@@ -41,7 +49,6 @@ export default function (props) {
   );
 
   const handleChange = (value) => {
-    // console.log(value)
     setHouseName(value);
   };
 
@@ -50,15 +57,18 @@ export default function (props) {
   };
 
   const handleSubmit = (value) => {
-    // console.log(value)
     _handleSubmit(value);
   };
 
   const _handleSubmit = (value) => {
-    // setHouseName(value);
-    // setHouseSubmitName(value);
+    setHouseName(value);
+    setHouseSubmitName(value);
+    setPage({
+      pageSize: 8,
+      pageNum: 1
+    });
     // setPage(CommonEnum.PAGE);
-    // setHouseLists([]);
+    setHouseLists([]);
   };
 
   useEffect(() => {
