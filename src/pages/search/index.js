@@ -48,6 +48,8 @@ export default function (props) {
     null,
   );
 
+  useImgHook(".item-img", (entries) => {}, null);
+
   const handleChange = (value) => {
     setHouseName(value);
   };
@@ -102,7 +104,7 @@ export default function (props) {
         <div className="result">
           {houseLists.map((item) => (
             <div className="item" key={item.id}>
-              <img alt="img" src={item.img} />
+              <img alt="img" className="item-img" src={require("../../assets/blank.png")} data-src={item.img}/>
               <div className="item-right">
                 <div className="title">{item.title}</div>
                 <div className="price">{item.price}</div>
