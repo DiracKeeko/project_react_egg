@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SearchBar, ActivityIndicator } from 'antd-mobile';
 import { useHttpHook, useObserverHook, useImgHook } from '@/hooks';
 import { useLocation } from "umi";
+import { ShowLoading } from "@/components";
 
 import './index.less';
 
@@ -111,11 +112,7 @@ export default function (props) {
               </div>
             </div>
           ))}
-          {showLoading ? (
-            <div id="loading">loading</div>
-          ) : (
-            <div>没有数据了</div>
-          )}
+          <ShowLoading showLoading={showLoading}></ShowLoading>
         </div>
       )}
     </div>
