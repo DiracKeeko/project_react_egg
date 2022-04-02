@@ -3,16 +3,14 @@ import { SearchBar, ActivityIndicator } from 'antd-mobile';
 import { useHttpHook, useObserverHook, useImgHook } from '@/hooks';
 import { useLocation } from "umi";
 import { ShowLoading } from "@/components";
+import { CommonEnum } from '@/enums';
 
 import './index.less';
 
 export default function (props) {
   const { query } = useLocation(); // location中的query参数 { key: value }形式
   const [houseName, setHouseName] = useState('');
-  const [page, setPage] = useState({
-    pageSize: 8, // 单页展示元素数量
-    pageNum: 1, // 页码数
-  });
+  const [page, setPage] = useState(CommonEnum.PAGE);
   const [houseLists, setHouseLists] = useState([]);
   const [showLoading, setShowLoading] = useState(true);
   const [houseSubmitName, setHouseSubmitName] = useState("");
@@ -36,7 +34,7 @@ export default function (props) {
    * 4、监听loading状态的变化，拼装数据
    */
   useObserverHook(
-    '#loading',
+    `#${CommonEnum.LOADING_ID}`,
     (entries) => {
       // console.log(entries);
       if (!loading && entries[0].isIntersecting) {
@@ -66,11 +64,7 @@ export default function (props) {
   const _handleSubmit = (value) => {
     setHouseName(value);
     setHouseSubmitName(value);
-    setPage({
-      pageSize: 8,
-      pageNum: 1
-    });
-    // setPage(CommonEnum.PAGE);
+    setPage(CommonEnum.PAGE);
     setHouseLists([]);
   };
 

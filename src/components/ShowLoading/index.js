@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { CommonEnum } from "@/enums";
 
 import './index.less';
 
-export default function (props) {
+export default function ShowLoading(props) {
   const [state, setState] = useState();
 
   useEffect(() => {}, []);
@@ -11,7 +12,7 @@ export default function (props) {
   return (
     <div>
       {props.showLoading ? (
-        <div id="loading" className="loading-info">
+        <div id={CommonEnum.LOADING_ID} className="loading-info">
           loading
         </div>
       ) : (
