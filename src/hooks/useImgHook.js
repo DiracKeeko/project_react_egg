@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { isEmpty } from "lodash";
 
 /**
  * 1，监听图片是否进入可视区域；
@@ -13,7 +14,7 @@ let sectionObserver;
 export default function (ele, callback, watch = []) {
   useEffect(() => {
     const nodes = document.querySelectorAll(ele);
-    if (nodes && nodes.length) {
+    if (!isEmpty(nodes)) {
       sectionObserver = new IntersectionObserver(entries => {
         callback && callback(entries);
         entries.forEach(item => {
@@ -30,7 +31,7 @@ export default function (ele, callback, watch = []) {
       })
     }
     return () => {
-      if (nodes && nodes.length && sectionObserver) {
+      if (!isEmpty(nodes) && sectionObserver) {
         sectionObserver.disconnect();
       }
     }
