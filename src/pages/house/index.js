@@ -14,7 +14,7 @@ export default function(props){
   }, [])
 
   return (
-    <div>
+    <div className="house-page">
       {/* banner */}
       <Banner></Banner>
       {/* 房屋信息 */}
