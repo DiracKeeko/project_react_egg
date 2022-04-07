@@ -16,6 +16,28 @@ export default {
         detail: payload
       }
     },
+    getComments(state, payload) {
+      return {
+        ...state,
+        comments: payload
+      }
+    },
+    setShowLoading(state, payload) {
+      return {
+        ...state,
+        showLoading: payload
+      }
+    },
+    reloadComments(state, payload) {
+      return {
+        ...state,
+        reloadCommentsNum: state.reloadCommentsNum + 1,
+        page: {
+          ...CommonEnum.PAGE,
+          pageNum: state.page.pageNum + 1
+        }
+      }
+    },
   },
   effects: {
     async getDetailAsync(dispatch, rootState, payload) {
@@ -26,6 +48,25 @@ export default {
       dispatch({
         type: 'getDetail',
         payload: detail
+      });
+    },
+    async getCommentsAsync(dispatch, rootState, payload) {
+      const { comments, page } = rootState.house;
+      const lists = await Http({
+        url: '/comments/lists',
+        body: {
+          ...payload,
+          pageSize: page.pageSize,
+          pageNum: page.pageNum
+        }
+      });
+      dispatch({
+        type: 'getComments',
+        payload: [...comments, ...lists]
+      });
+      dispatch({
+        type: 'setShowLoading',
+        payload: lists.length ? true : false
       });
     },
   }
