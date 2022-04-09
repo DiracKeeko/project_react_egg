@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import { useStoreHook } from 'think-react-store';
 import { useObserverHook } from '@/hooks';
 import { CommonEnum } from '@/enums';
+import { useLocation } from 'umi';
 
 import './index.less';
 
@@ -19,9 +20,11 @@ export default function (props) {
       reloadComments,
       reloadCommentsNum,
       showLoading,
+      resetData
     },
   } = useStoreHook();
 
+  const { query } = useLocation();
   /**
    * 1，监听loading是否展示出来
    * 2，出发reload，修改分页
@@ -45,12 +48,24 @@ export default function (props) {
   );
 
   useEffect(() => {
-    getDetailAsync({});
+    getDetailAsync({
+      id: query?.id
+    });
   }, []);
 
   useEffect(() => {
-    getCommentsAsync({});
+    getCommentsAsync({
+      id: query?.id
+    });
   }, [reloadCommentsNum]);
+
+  useEffect(() => {
+    return () => {
+      resetData({
+        detail: {}
+      });
+    }
+  }, [])
 
   return (
     <div className="house-page">
