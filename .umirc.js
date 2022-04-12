@@ -1,7 +1,10 @@
 import { defineConfig } from 'umi';
 
 export default defineConfig({
-  publicPath: "./",
+  publicPath: "/", 
+  // ↑ 不写或用"/"
+  // 如果路径不对，如"./"，在二级路由的页面刷新，会报错
+  // umi.js:1 Uncaught SyntaxError: Unexpected token '<
   nodeModulesTransform: {
     type: 'none',
   },
@@ -24,6 +27,11 @@ export default defineConfig({
           path: '/user',
           component: './user/index',
           title: '我的'
+        },
+        {
+          path: '/user/edit',
+          component: './user/edit',
+          title: '设置用户'
         },
         {
           path: '/search',
