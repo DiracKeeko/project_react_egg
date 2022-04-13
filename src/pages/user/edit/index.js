@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { List, ImagePicker, Toast, InputItem, Button } from 'antd-mobile';
 import { createForm } from 'rc-form';
+import { useStoreHook } from 'think-react-store';
 
 function Edit(props) {
   const [files, setFiles] = useState([]);
   const { getFieldProps, validateFields } = props.form;
+  const { user: { editUserAsync } } = useStoreHook();
+
   const handleChange = (files) => {
     // files是一个数组，数组内容是选中的file信息
     // [{...}, {...}]
@@ -26,7 +29,11 @@ function Edit(props) {
         Toast.fail("请完整填写信息");
         return;
       } else {
-
+        editUserAsync({
+          img: files[0].url,
+          tel: val.tel,
+          sign: val.sign
+        });
       }
     })
   };
