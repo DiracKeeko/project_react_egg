@@ -21,12 +21,14 @@ export default defineConfig({
         {
           path: '/order',
           component: './order/index',
-          title: '订单'
+          title: '订单',
+          auth: true
         },
         {
           path: '/user',
           component: './user/index',
-          title: '我的'
+          title: '我的',
+          auth: true
         },
         {
           path: '/user/edit',
