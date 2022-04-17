@@ -3,6 +3,7 @@ import { ActivityIndicator } from 'antd-mobile';
 import { isEmpty } from 'lodash';
 import OrderItem from '../Item';
 import { ShowLoading } from '@/components';
+import { OrderSkeletons } from '@/skeletons';
 
 export default function (props) {
   const [state, setState] = useState();
@@ -12,7 +13,7 @@ export default function (props) {
   return (
     <div>
       {isEmpty(props?.orders) ? (
-        <ActivityIndicator toast></ActivityIndicator>
+        <OrderSkeletons></OrderSkeletons>
       ) : (
         <div className="tab-lists">
           {props.orders.map((item) => (
