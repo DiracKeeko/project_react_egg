@@ -4,11 +4,23 @@ const Controller = require('egg').Controller;
 const md5 = require('md5');
 
 class UserController extends Controller {
+
+  async jwtSign() {
+    const { ctx, app } = this;
+    const username = ctx.request.body.username;
+    // const username = ctx.params('username');
+    const token = app.jwt.sign({
+      username
+    }, app.config.jwt.secret);
+    ctx.session[username] = 1;
+    // await app.redis.set(username, token, 'EX', app.config.redisExpire);
+    return token;
+  }
+
   async register() {
     const { ctx, app } = this;
     const params = ctx.request.body;
     const user = await ctx.service.user.getUser(params.username);
-    const dayjs = require('dayjs');
 
     if (user) {
       ctx.body = {
@@ -23,12 +35,15 @@ class UserController extends Controller {
       password: md5(params.password + app.config.salt),
       createTime: ctx.helper.time()
     });
+
+    const token = await this.jwtSign();
     if (res) {
       ctx.body = {
         status: 200,
         data: {
           ...ctx.helper.unPick(res.dataValues, ['password']),
-          createTime: ctx.helper.timestamp(res.createTime)
+          createTime: ctx.helper.timestamp(res.createTime),
+          token
         }
       };
     } else {
@@ -40,16 +55,23 @@ class UserController extends Controller {
   }
 
   async login() {
-    const { ctx } = this;
+    const { ctx, app } = this;
     const { username, password } = ctx.request.body;
     const user = await ctx.service.user.getUser(username, password);
     if (user) {
-      ctx.session.userId = user.id;
+      // app.jwt.sign(payload, secret key)
+      const token = await this.jwtSign()
+      // const token = app.jwt.sign({
+      //   username
+      // }, app.config.jwt.secret);
+      ctx.session[username] = 1;
+
       ctx.body = {
         status: 200,
         data: {
           ...ctx.helper.unPick(user.dataValues, ['password']),
-          createTime: ctx.helper.timestamp(user.createTime)
+          createTime: ctx.helper.timestamp(user.createTime),
+          token
         }
       }
     } else {
