@@ -8,12 +8,10 @@ class UserController extends Controller {
   async jwtSign() {
     const { ctx, app } = this;
     const username = ctx.request.body.username;
-    // const username = ctx.params('username');
     const token = app.jwt.sign({
       username
     }, app.config.jwt.secret);
     ctx.session[username] = 1;
-    // await app.redis.set(username, token, 'EX', app.config.redisExpire);
     return token;
   }
 
@@ -59,11 +57,8 @@ class UserController extends Controller {
     const { username, password } = ctx.request.body;
     const user = await ctx.service.user.getUser(username, password);
     if (user) {
-      // app.jwt.sign(payload, secret key)
+      // 语法: app.jwt.sign(payload, secret key)
       const token = await this.jwtSign()
-      // const token = app.jwt.sign({
-      //   username
-      // }, app.config.jwt.secret);
       ctx.session[username] = 1;
 
       ctx.body = {
