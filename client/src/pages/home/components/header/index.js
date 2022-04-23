@@ -3,19 +3,19 @@ import { Link } from 'umi';
 import { cookie } from 'project-libs';
 
 function Header(props) {
-  const [state, setState] = useState();
+  const [username, setUsername] = useState(localStorage.getItem('username'));
   // console.log("header render");
 
   useEffect(() => {
-    const user = cookie.get('user');
+    // const user = cookie.get('user');
   }, []);
 
   return (
     <div className="header">
       <div className="header_title">民宿</div>
       <div className="header_login">
-        {cookie.get('user') ? (
-          cookie.get('user').username
+        {username ? (
+          username
         ) : (
           <>
             <Link to="/login">登录</Link> | <Link to="/register">注册</Link>
