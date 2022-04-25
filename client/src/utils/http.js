@@ -40,7 +40,11 @@ export default function Http({
         if(res.status === 200){
           resolve(res.data);
           setResult && setResult(res.data);
-        }else {
+        } else {
+          if (res.status === 1001) {
+            location.href = "/login?from" + location.pathname;
+            localStorage.clear();
+          }
           Toast.fail(res.errMsg);
           reject(res.errMsg);
         }
