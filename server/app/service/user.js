@@ -2,9 +2,10 @@
 
 const Service = require('egg').Service;
 const md5 = require('md5');
-class UserService extends Service {
+const BaseService = require('./base');
+class UserService extends BaseService {
   async getUser(username, password) {
-    try {
+    return this.run(async () => {
       const { ctx, app } = this;
       const _where = password
         ? { username, password: md5(password + app.config.salt) }
@@ -13,21 +14,15 @@ class UserService extends Service {
         where: _where,
       });
       return res;
-    } catch (err) {
-      console.log(err);
-      return null;
-    }
+    })
   }
 
   async add(params) {
-    try {
+    return this.run(async () => {
       const { ctx } = this;
-      const res = ctx.model.User.create(params);
+      const res = await ctx.model.User.create(params);
       return res;
-    } catch (err) {
-      console.log(err);
-      return null;
-    }
+    })
   }
 }
 
