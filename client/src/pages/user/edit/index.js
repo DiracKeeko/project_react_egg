@@ -4,9 +4,11 @@ import { createForm } from 'rc-form';
 import { useStoreHook } from 'think-react-store';
 
 function Edit(props) {
-  const [files, setFiles] = useState([]);
   const { getFieldProps, validateFields } = props.form;
-  const { user: { editUserAsync } } = useStoreHook();
+  const {
+    user: { editUserAsync, getUserAsync, avatar, phone, sign },
+  } = useStoreHook();
+  const [files, setFiles] = useState([{url: avatar}]);
 
   const handleChange = (files) => {
     // files是一个数组，数组内容是选中的file信息
@@ -21,58 +23,53 @@ function Edit(props) {
 
   const handleSubmit = () => {
     if (!files.length) {
-      Toast.fail("请上传图片");
+      Toast.fail('请上传图片');
       return;
     }
     validateFields((err, val) => {
       if (err) {
-        Toast.fail("请完整填写信息");
+        Toast.fail('请完整填写信息');
         return;
       } else {
         editUserAsync({
-          img: files[0].url,
-          tel: val.tel,
-          sign: val.sign
+          avatar: files[0].url,
+          phone: val.tel,
+          sign: val.sign,
         });
       }
-    })
+    });
   };
   useEffect(() => {
     // console.log('props->', props);
+    getUserAsync({});
   }, []);
 
   return (
     <div className="user-edit">
       <List>
-        <List.Item>
-          <ImagePicker
-            files={files}
-            selectable={files.length < 1}
-            onChange={handleChange}
-          />
-        </List.Item>
-        <List.Item>
-          <InputItem
-            placeholder="电话"
-            {...getFieldProps('tel', {
-              rules: [{ required: true }],
-              initialValue: '0571-000',
-            })}
-          >
-            电话：
-          </InputItem>
-        </List.Item>
-        <List.Item>
-          <InputItem
-            placeholder="签名"
-            {...getFieldProps('sign', {
-              rules: [{ required: true }],
-              initialValue: 'sign',
-            })}
-          >
-            签名：
-          </InputItem>
-        </List.Item>
+        <ImagePicker
+          files={files}
+          selectable={files.length < 1}
+          onChange={handleChange}
+        />
+        <InputItem
+          placeholder="电话"
+          {...getFieldProps('tel', {
+            rules: [{ required: true }],
+            initialValue: phone,
+          })}
+        >
+          电话：
+        </InputItem>
+        <InputItem
+          placeholder="签名"
+          {...getFieldProps('sign', {
+            rules: [{ required: true }],
+            initialValue: sign,
+          })}
+        >
+          签名：
+        </InputItem>
       </List>
       <Button
         type="warning"
