@@ -13,5 +13,8 @@ module.exports = (app) => {
     },
   };
 
+  // push的先后顺序有要求，先判断接口是否存在，再判断auth
+  app.config.coreMiddleware.push('notFound');
   app.config.coreMiddleware.push('auth');
+  // console.log(app.config.coreMiddleware);
 };

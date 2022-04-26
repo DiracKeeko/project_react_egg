@@ -5,6 +5,7 @@ import { useHttpHook, useObserverHook } from '@/hooks';
 import { CommonEnum } from '@/enums';
 import { Http } from '@/utils';
 import { isEmpty } from 'lodash';
+import { ErrorBoundary } from '@/components';
 
 import './index.less';
 
@@ -14,18 +15,17 @@ export default function (props) {
   const [showLoading, setShowLoading] = useState(true);
   const [type, setType] = useState(0);
 
-
   const invokeHttp = async (pageNum) => {
     const res = await Http({
       url: '/order/lists',
       body: {
         ...page,
         pageNum,
-        type
+        type,
       },
     });
     return res;
-  } 
+  };
   const fetchOrder = async (pageNum) => {
     const res = await invokeHttp(pageNum);
     if (!isEmpty(res) && res.length === page.pageSize) {
@@ -42,7 +42,7 @@ export default function (props) {
     setPage(CommonEnum.PAGE);
     setOrders([]);
     setShowLoading(true);
-  }
+  };
   const tabs = [
     {
       title: '未支付',
@@ -63,23 +63,21 @@ export default function (props) {
   useObserverHook(
     `#${CommonEnum.LOADING_ID}`,
     async (entries) => {
-      if (
-        entries[0].isIntersecting
-      ) {
+      if (entries[0].isIntersecting) {
         const res = await invokeHttp(page.pageNum + 1);
         if (!isEmpty(orders) && !isEmpty(res) && res.length === page.pageSize) {
           setOrders([...orders, ...res]);
           setPage({
             ...page,
-            pageNum: page.pageNum + 1
-          })
+            pageNum: page.pageNum + 1,
+          });
           setShowLoading(true);
         } else {
           setShowLoading(false);
         }
       }
     },
-    null
+    null,
   );
 
   useEffect(() => {
@@ -87,15 +85,17 @@ export default function (props) {
   }, [type]);
 
   return (
-    <div className="order-page">
-      <Tabs tabs={tabs} onChange={handleChange}>
-        <div className="tab">
-          <Lists orders={orders} type={0} showLoading={showLoading}></Lists>
-        </div>
-        <div className="tab">
-          <Lists orders={orders} type={1} showLoading={showLoading}></Lists>
-        </div>
-      </Tabs>
-    </div>
+    <ErrorBoundary>
+      <div className="order-page">
+        <Tabs tabs={tabs} onChange={handleChange}>
+          <div className="tab">
+            <Lists orders={orders} type={0} showLoading={showLoading}></Lists>
+          </div>
+          <div className="tab">
+            <Lists orders={orders} type={1} showLoading={showLoading}></Lists>
+          </div>
+        </Tabs>
+      </div>
+    </ErrorBoundary>
   );
 }

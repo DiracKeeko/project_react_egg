@@ -1,5 +1,3 @@
-const user = require("../../../../../app/model/user");
-
 // ↓ 插件可以处理业务逻辑 (与之对比，中间件更适合处理请求)
 module.exports = (options) => {
   // console.log("options", options);
