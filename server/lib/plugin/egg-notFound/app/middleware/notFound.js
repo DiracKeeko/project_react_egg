@@ -13,6 +13,5 @@ module.exports = (options) => {
         errMsg: `接口${ctx.request.url}不存在`
       }
     }
-    await next();
   };
 };
