@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { SearchBar, ActivityIndicator } from 'antd-mobile';
 import { useHttpHook, useObserverHook, useImgHook } from '@/hooks';
-import { useLocation } from "umi";
-import { ShowLoading } from "@/components";
+import { useLocation } from 'umi';
+import { ShowLoading } from '@/components';
 import { CommonEnum } from '@/enums';
 
 import './index.less';
@@ -13,8 +13,8 @@ export default function (props) {
   const [page, setPage] = useState(CommonEnum.PAGE);
   const [houseLists, setHouseLists] = useState([]);
   const [showLoading, setShowLoading] = useState(true);
-  const [houseSubmitName, setHouseSubmitName] = useState("");
-  
+  const [houseSubmitName, setHouseSubmitName] = useState('');
+
   const [houses, loading] = useHttpHook({
     url: '/house/search',
     body: {
@@ -22,7 +22,7 @@ export default function (props) {
       houseName,
       code: query?.code,
       startTime: `${query?.startTime} 00:00:00`,
-      endTime: `${query?.endTime} 23:59:59`
+      endTime: `${query?.endTime} 23:59:59`,
     },
     watch: [page.pageNum, houseSubmitName],
   });
@@ -47,7 +47,7 @@ export default function (props) {
     null,
   );
 
-  useImgHook(".item-img", (entries) => {}, null);
+  useImgHook('.item-img', (entries) => {}, null);
 
   const handleChange = (value) => {
     setHouseName(value);
@@ -99,9 +99,14 @@ export default function (props) {
         <div className="result">
           {houseLists.map((item) => (
             <div className="item" key={item.id}>
-              <img alt="img" className="item-img" src={require("../../assets/blank.png")} data-src={item.img}/>
+              <img
+                alt="img"
+                className="item-img"
+                src={require('../../assets/blank.png')}
+                data-src={item?.imgs[0]?.url}
+              />
               <div className="item-right">
-                <div className="title">{item.title}</div>
+                <div className="title">{item.name}</div>
                 <div className="price">{item.price}</div>
               </div>
             </div>

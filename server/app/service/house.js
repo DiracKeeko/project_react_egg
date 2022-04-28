@@ -39,6 +39,9 @@ class HouseService extends BaseService {
         },
         endTime: {
           [gte]: params.endTime
+        },
+        name: {
+          [like]: '%' + params.houseName + '%' //模糊查询
         }
       };
       const result = await ctx.model.House.findAll({
