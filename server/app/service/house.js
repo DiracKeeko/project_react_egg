@@ -1,25 +1,51 @@
 const BaseService = require("./base");
 
 class HouseService extends BaseService {
+  commonAttr(app){
+    return {
+      order: [
+        ['showCount', 'DESC']
+      ],
+      attributes: {
+        exclude: ['startTime', 'endTime', 'publishTime']
+      },
+      include: [
+        {
+          model: app.model.Imgs,
+          limit: 1,
+          attributes: ['url']
+        }
+      ]
+    }
+  }
   async hot() {
     return this.run(async (ctx, app) => {
       const result = await ctx.model.House.findAll({
-        limit: 4,
-        order: [
-          ["showCount", "DESC"], 
-          // 按照showCount字段的降序进行排序
-        ],
-        attributes: {
-          exclude: ["startTime", "endTime", "publishTime"], 
-          // 去掉不需要的key
+        ...this.commonAttr(app),
+        limit: 4
+      });
+
+      return result;
+    });
+  }
+
+  async search(params) {
+    return this.run(async (ctx, app) => {
+      const { lte, gte, like } = app.Sequelize.Op;
+      const where = {
+        cityCode: Array.isArray(params.code) ? params.code[0] : params.code,
+        startTime: {
+          [lte]: params.startTime
         },
-        include: [
-          {
-            model: app.model.Imgs,
-            limit: 1,
-            attributes: ['url']
-          }
-        ]
+        endTime: {
+          [gte]: params.endTime
+        }
+      };
+      const result = await ctx.model.House.findAll({
+        ...this.commonAttr(app),
+        limit: 8,
+        offset: (params.pageNum - 1) * params.pageSize,
+        where
       });
 
       return result;
