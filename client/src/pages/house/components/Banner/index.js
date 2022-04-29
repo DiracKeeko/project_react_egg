@@ -21,7 +21,7 @@ export default function (props) {
           <div className="swiper-slide" key={index}>
             <img
               alt="banner"
-              src={item}
+              src={item.url}
             ></img>
           </div>
         ))}

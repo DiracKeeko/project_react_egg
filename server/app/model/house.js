@@ -15,6 +15,7 @@ module.exports = (app) => {
       type: DATE,
       get() {
         return new Date(this.getDataValue("publishTime")).getTime();
+        // 在读数之后，将publishTime字段转化为时间戳
       },
     },
     cityCode: STRING,
