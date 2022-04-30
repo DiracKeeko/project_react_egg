@@ -20,11 +20,28 @@ export default function (props) {
       reloadComments,
       reloadCommentsNum,
       showLoading,
-      resetData
+      resetData,
+      order,
+      hasOrderAsync,
+      addOrderAsync,
+      delOrderAsync,
     },
   } = useStoreHook();
 
   const { query } = useLocation();
+
+  const handleBtnClick = (id) => {
+    if(!id){
+      addOrderAsync({
+        id: query?.id
+      });
+    }else {
+      delOrderAsync({
+        id: query?.id
+      });
+    }
+  }
+  
   /**
    * 1，监听loading是否展示出来
    * 2，出发reload，修改分页
@@ -49,30 +66,36 @@ export default function (props) {
 
   useEffect(() => {
     getDetailAsync({
-      id: query?.id
+      id: query?.id,
     });
   }, []);
 
   useEffect(() => {
     getCommentsAsync({
-      id: query?.id
+      id: query?.id,
     });
   }, [reloadCommentsNum]);
 
   useEffect(() => {
+    hasOrderAsync({
+      id: query?.id,
+    });
+  }, []);
+
+  useEffect(() => {
     return () => {
       resetData({
-        detail: {}
+        detail: {},
       });
-    }
-  }, [])
+    };
+  }, []);
 
   return (
     <div className="house-page">
       {/* banner */}
       <Banner banner={detail?.banner}></Banner>
       {/* 房屋信息 */}
-      <Info detail={detail?.info}></Info>
+      <Info detail={detail?.info} order={order} btnClick={handleBtnClick}></Info>
       {/* 评论列表 */}
       <Lists lists={comments} showLoading={showLoading}></Lists>
       {/* footer */}
