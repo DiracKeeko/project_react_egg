@@ -8,12 +8,24 @@ import { OrderSkeletons } from '@/skeletons';
 export default function (props) {
   const [state, setState] = useState();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setTimeout(() => {
+      if (isEmpty(props?.orders)) {
+        setState(true);
+      }
+    }, 1500);
+  }, []);
 
   return (
     <div>
       {isEmpty(props?.orders) ? (
-        <OrderSkeletons></OrderSkeletons>
+        <>
+          {state ? (
+            <ShowLoading showLoading={false}></ShowLoading>
+          ) : (
+            <OrderSkeletons></OrderSkeletons>
+          )}
+        </>
       ) : (
         <div className="tab-lists">
           {props.orders.map((item) => (

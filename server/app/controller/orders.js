@@ -32,15 +32,16 @@ class OrdersController extends BaseController {
     this.success(result);
   }
 
-  // async lists() {
-  //   const { ctx, app } = this;
-  //   const result = await ctx.service.orders.lists({
-  //     ...ctx.params(),
-  //     userId: ctx.userId
-  //   });
+  async lists() {
+    const { ctx, app } = this;
+    const user = await ctx.service.user.getUser(ctx.username);
+    const result = await ctx.service.orders.lists({
+      ...ctx.params(),
+      userId: user.id
+    });
 
-  //   this.success(result);
-  // }
+    this.success(result);
+  }
 
   // async invokePay(params) {
   //   return {

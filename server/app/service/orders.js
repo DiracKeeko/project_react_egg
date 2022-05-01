@@ -30,33 +30,33 @@ class OrdersService extends BaseService {
     });
   }
 
-  // async lists(params){
-  //   return this.run(async (ctx, app) => {
-  //     const result = await ctx.model.Orders.findAll({
-  //       where: {
-  //         isPayed: params.type,
-  //         userId: params.userId
-  //       },
-  //       limit: params.pageSize,
-  //       offset: (params.pageNum -1) * params.pageSize,
-  //       include: [
-  //         {
-  //           model: app.model.House,
-  //           as: 'house',
-  //           include: [
-  //             {
-  //               model: app.model.Imgs,
-  //               attributes: ['url'],
-  //               limit: 1
-  //             }
-  //           ]
-  //         }
-  //       ]
-  //     });
+  async lists(params){
+    return this.run(async (ctx, app) => {
+      const result = await ctx.model.Orders.findAll({
+        where: {
+          isPayed: params.type,
+          userId: params.userId
+        },
+        limit: params.pageSize,
+        offset: (params.pageNum -1) * params.pageSize,
+        include: [
+          {
+            model: app.model.House,
+            as: 'house', // 别名 要和 Model里面的别名对应
+            include: [
+              {
+                model: app.model.Imgs,
+                attributes: ['url'],
+                limit: 1
+              }
+            ]
+          }
+        ]
+      });
 
-  //     return result;
-  //   });
-  // }
+      return result;
+    });
+  }
 
   // async pay(params){
   //   return this.run(async (ctx) => {

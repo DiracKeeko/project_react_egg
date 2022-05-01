@@ -28,5 +28,10 @@ module.exports = app => {
     }
   });
 
+  // 多对一 belongsTo
+  Orders.associate = () => {
+    app.model.Orders.belongsTo(app.model.House, { foreignKey: 'houseId', as: 'house' });
+  }
+
   return Orders;
 }
