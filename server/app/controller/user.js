@@ -5,12 +5,11 @@ const md5 = require("md5");
 const BaseController = require("./base");
 
 class UserController extends BaseController {
-  async jwtSign() {
+  async jwtSign({id, username}) {
     const { ctx, app } = this;
-    // const username = ctx.request.body.username;
-    const username = ctx.params("username"); // extend/context.js封装
     const token = app.jwt.sign(
       {
+        id,
         username,
       },
       app.config.jwt.secret
@@ -43,7 +42,10 @@ class UserController extends BaseController {
     });
 
     if (res) {
-      const token = await this.jwtSign();
+      const token = await this.jwtSign({ 
+        id: res.id, 
+        username: res.username 
+      });
       this.success({
         ...parseResult(ctx, res),
         token,
@@ -59,7 +61,10 @@ class UserController extends BaseController {
     const user = await ctx.service.user.getUser(username, password);
     if (user) {
       // 语法: app.jwt.sign(payload, secret key)
-      const token = await this.jwtSign();
+      const token = await this.jwtSign({
+        id: user.id,
+        username: user.username
+      });
       // ctx.session[username] = 1;
       this.success({
         ...this.parseResult(ctx, user),
@@ -99,8 +104,8 @@ class UserController extends BaseController {
     const { ctx } = this;
     const res = ctx.service.user.edit({
       ...ctx.params(),
-      updateTime: ctx.helper.time()
-    })
+      updateTime: ctx.helper.time(),
+    });
     this.success(res);
   }
 }
