@@ -105,6 +105,7 @@ class UserController extends BaseController {
     const res = ctx.service.user.edit({
       ...ctx.params(),
       updateTime: ctx.helper.time(),
+      sign: ctx.helper.escape(ctx.params('sign')), // escape -> 过滤html标签
     });
     this.success(res);
   }
