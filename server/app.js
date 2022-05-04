@@ -16,7 +16,7 @@ module.exports = (app) => {
   const mids = app.config.coreMiddleware;
   app.config.coreMiddleware = [
     ...mids,
-    ...["interfaceLimit", "allowHosts", "notFound", "auth"],
+    ...["interfaceLimit", "allowHosts", "notFound", "auth", "interfaceCache"],
   ];
 
   // 先后顺序有要求，先判断接口是否存在，再判断auth

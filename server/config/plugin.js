@@ -68,3 +68,8 @@ exports.interfaceLimit = {
   enable: true,
   path: path.join(__dirname, '../lib/plugin/egg-interfaceLimit')
 }
+
+exports.interfaceCache = {
+  enable: true,
+  path: path.join(__dirname, '../lib/plugin/egg-interfaceCache')
+};
